@@ -2,6 +2,44 @@ body {
     background-color: #0a0a23;
   }
   
+  #places{
+    max-width: 500px;
+    max-height: 500px;
+  }
+
+  #places img{
+    width: 500px;
+    height: 260px;
+  }
+
+  #townSquareImg{
+    display: block;
+  }
+
+  #storeImg {
+    display: none;
+  }
+
+  #caveImg{
+    display: none;
+  }
+
+  #dragonImg{
+    display: none;
+  }
+
+  #slimeImg{
+    display: none;
+  }
+
+  #fangedBeastImg{
+    display: none;
+  }
+
+  audio{
+    display: none;
+  }
+
   #text {
     background-color: #0a0a23;
     color: #ffffff;
@@ -16,7 +54,7 @@ body {
     margin: 30px auto 0px;
     padding: 10px;
   }
-  
+
   #controls,
   #stats {
     border: 1px solid #0a0a23;

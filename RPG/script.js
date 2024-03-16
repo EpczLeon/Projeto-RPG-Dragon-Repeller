@@ -5,7 +5,21 @@ let currentWeapon = 0;
 let fighting;
 let monsterHealth;
 let inventory = ["stick"];
+let price = 30;
 
+const townSquareMusic = document.querySelector('#townSquareMusic');
+const storeMusic = document.querySelector('#storeMusic');
+const caveMusic = document.querySelector('#caveMusic');
+const finalBossMusic = document.querySelector('#finalBossMusic');
+const battleMusic = document.querySelector('#battleMusic');
+const attackSound = document.querySelector('#attackSound')
+const victorySound = document.querySelector('#victorySound')
+const townSquare = document.querySelector('#townSquareImg');
+const store = document.querySelector('#storeImg');
+const cave = document.querySelector('#caveImg');
+const dragonFight = document.querySelector('#dragonImg');
+const slime = document.querySelector('#slimeImg')
+const fangedBeast = document.querySelector('#fangedBeastImg')
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector("#button3");
@@ -39,6 +53,7 @@ const monsters = [
     health: 300
   }
 ]
+
 const locations = [
   {
     name: "town square",
@@ -48,7 +63,7 @@ const locations = [
   },
   {
     name: "store",
-    "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"],
+    "button text": ["Buy 10 health (10 gold)", `Buy weapon (${price})`, "Go to town square"],
     "button functions": [buyHealth, buyWeapon, goTown],
     text: "You enter the store."
   },
@@ -108,14 +123,114 @@ function update(location) {
 
 function goTown() {
   update(locations[0]);
+  updateImages('town')
+  finalBossMusic.pause();
+  finalBossMusic.remove();
 }
 
 function goStore() {
   update(locations[1]);
+  if(price > 30){
+    button2.innerText=`Buy weapon (${price})`
+  }
+  updateImages('store')
+  finalBossMusic.remove();
 }
 
 function goCave() {
   update(locations[2]);
+  updateImages('cave')
+  finalBossMusic.pause();
+  finalBossMusic.remove();
+}
+
+function updateImages(location) {
+  switch (location) {
+    case 'town':
+      townSquare.style.display = 'block';
+      store.style.display = 'none';
+      cave.style.display = 'none';
+      dragonFight.style.display = 'none';
+      slime.style.display = 'none'
+      fangedBeast.style.display = 'none'
+      townSquareMusic.play();
+      townSquareMusic.currentTime = 2;
+      storeMusic.pause();
+      caveMusic.pause();
+      battleMusic.pause();
+      finalBossMusic.pause(); // Pausa a música quando saímos de outra localização
+      break;
+    case 'store':
+      townSquare.style.display = 'none';
+      store.style.display = 'block';
+      cave.style.display = 'none';
+      dragonFight.style.display = 'none';
+      slime.style.display = 'none'
+      fangedBeast.style.display = 'none'
+      storeMusic.play();
+      townSquareMusic.pause();
+      caveMusic.pause();
+      battleMusic.pause();
+      finalBossMusic.pause(); // Pausa a música quando saímos de outra localização
+      break;
+    case 'cave':
+      townSquare.style.display = 'none';
+      store.style.display = 'none';
+      cave.style.display = 'block';
+      dragonFight.style.display = 'none';
+      slime.style.display = 'none'
+      fangedBeast.style.display = 'none'
+      caveMusic.play();
+      storeMusic.pause();
+      townSquareMusic.pause();
+      battleMusic.pause();
+      finalBossMusic.pause();
+      break;
+    case 'dragonFight':
+      townSquare.style.display = 'none';
+      store.style.display = 'none';
+      cave.style.display = 'none';
+      dragonFight.style.display = 'block';
+      slime.style.display = 'none'
+      fangedBeast.style.display = 'none'
+      finalBossMusic.play();
+      finalBossMusic.currentTime = 1; // Define o tempo da música para 1 segundo
+      storeMusic.pause();
+      caveMusic.pause();
+      battleMusic.pause();
+      townSquareMusic.pause(); 
+      break;
+    case 'monstersBattle':
+      if (fighting == 0) {
+        townSquare.style.display = 'none';
+        store.style.display = 'none';
+        cave.style.display = 'none';
+        dragonFight.style.display = 'none';
+        slime.style.display = 'block'
+        fangedBeast.style.display = 'none'
+        finalBossMusic.pause();
+        storeMusic.pause();
+        caveMusic.pause();
+        battleMusic.play();
+        townSquareMusic.pause();
+      }else if(fighting == 1){
+        townSquare.style.display = 'none';
+        store.style.display = 'none';
+        cave.style.display = 'none';
+        dragonFight.style.display = 'none';
+        slime.style.display = 'none'
+        fangedBeast.style.display = 'block'
+        finalBossMusic.pause();
+        storeMusic.pause();
+        caveMusic.pause();
+        battleMusic.play();
+        townSquareMusic.pause();
+        battleMusic.currentTime = 1;
+      }
+      break;
+    default:
+      console.error('Localização desconhecida:', location);
+  }
 }
 
 function buyHealth() {
@@ -131,14 +246,15 @@ function buyHealth() {
 
 function buyWeapon() {
   if (currentWeapon < weapons.length - 1) {
-    if (gold >= 30) {
-      gold -= 30;
+    if (gold >= price) {
+      gold -= price;
       currentWeapon++;
       goldText.innerText = gold;
       let newWeapon = weapons[currentWeapon].name;
       text.innerText = "You now have a " + newWeapon + ".";
       inventory.push(newWeapon);
       text.innerText += " In your inventory you have: " + inventory;
+      updatePrice(); 
     } else {
       text.innerText = "You do not have enough gold to buy a weapon.";
     }
@@ -148,6 +264,11 @@ function buyWeapon() {
     button2.onclick = sellWeapon;
   }
 }
+
+function updatePrice(){
+    price +=20
+    button2.innerText=`Buy weapon (${price})`
+  }
 
 function sellWeapon() {
   if (inventory.length > 1) {
@@ -164,16 +285,19 @@ function sellWeapon() {
 function fightSlime() {
   fighting = 0;
   goFight();
+  updateImages('monstersBattle')
 }
 
 function fightBeast() {
   fighting = 1;
   goFight();
+  updateImages('monstersBattle')
 }
 
 function fightDragon() {
   fighting = 2;
   goFight();
+  updateImages('dragonFight')
 }
 
 function goFight() {
@@ -185,6 +309,7 @@ function goFight() {
 }
 
 function attack() {
+  attackSound.play();
   text.innerText = "The " + monsters[fighting].name + " attacks.";
   text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
   health -= getMonsterAttackValue(monsters[fighting].level);
@@ -230,6 +355,8 @@ function defeatMonster() {
   goldText.innerText = gold;
   xpText.innerText = xp;
   update(locations[4]);
+  battleMusic.pause();
+  victorySound.play();
 }
 
 function lose() {
@@ -285,4 +412,19 @@ function pick(guess) {
       lose();
     }
   }
+}
+
+function disableSound(){
+      
+  finalBossMusic.pause();
+  storeMusic.pause();
+  caveMusic.pause();
+  battleMusic.pause();
+  townSquareMusic.pause();
+  finalBossMusic.remove();
+  storeMusic.remove();
+  caveMusic.remove();
+  battleMusic.remove();
+  townSquareMusic.remove();
+    
 }
