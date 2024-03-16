@@ -2,11 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="./styles.css">
     <title>RPG - Dragon Repeller</title>
   </head>
   <body>
+    <span>
+      <button onclick="disableSound()">Disable Sound</button>
+    </span>
     <div id="game">
+      <div id="places">
+        <img class="townSquareImg" id="townSquareImg" src="TownSquare.jpg" alt="Town Square">
+      </div>
+      <div id="places">
+        <img class="storeImg" id="storeImg" src="Store.jpg" alt="Store">
+      </div>
+      <div id="places">
+        <img class="caveImg" id="caveImg" src="cave-rpg.jpeg" alt="Cave">
+      </div>
+      <div id="places">
+        <img class="dragonImg" id="dragonImg" src="fight-dragon-rpg.jpeg" alt="Dragon" >
+      </div>
+      <div id="places">
+        <img class="slimeImg" id="slimeImg" src="Slime.jpg" alt="Slime">
+      </div>
+      <div id="places">
+        <img class="fangedBeastImg" id="fangedBeastImg" src="FangedBeast.jpg" alt="Fanged Beast">
+      </div>
+      <div class="musics">
+        <audio class="townSquareMusic" id="townSquareMusic" src="townSquareMusic.mp3" type="audio/mp3" controls></audio>
+        <audio class="storeMusic" id="storeMusic" src="storeMusic.mp3" type="audio/mp3" controls></audio>
+        <audio class="caveMusic" id="caveMusic" src="caveMusic.mp3" type="audio/mp3" controls>
+        <audio class="battleMusic" id="battleMusic" src="battleMusic.mp3" type="audio/mp3" controls></audio>
+        <audio class="finalBossMusic" id="finalBossMusic" src="dragonFightMusic.mp3" type="audio/mp3" controls></audio>
+        <audio class="attackSound" id="attackSound" src="attack.mp3" type="audio/mp3" controls></audio>
+        <audio class="victorySound" id="victorySound" src="victorySound.mp3" type="audio/mp3" controls></audio>
+      </div>
       <div id="stats">
         <span class="stat">XP: <strong><span id="xpText">0</span></strong></span>
         <span class="stat">Health: <strong><span id="healthText">100</span></strong></span>
